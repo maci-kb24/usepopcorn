@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const tempMovieData = [
@@ -51,19 +51,43 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
+const KEY = "48eb5390";
 
+export default function App() {
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
+  const query = 'Guardians of the Galaxy';
+
+  useEffect(() => {
+    async function fetchMovies() {
+      const res = await fetch(
+      `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+    )
+    const data = await res.json();
+    setMovies(data.Search);
+  }
+
+  fetchMovies();
+
+  }, []);
+  
   return (
     <>
-      <Navbar movies={movies}>
+      <Navbar>
         <Logo />
         <Search />
         <NumResults movies={movies} />
       </Navbar>
-      <Main movies={movies}>
-        <ListBox movies={movies} />
-        <WatchedBox />
+
+      <Main>
+        <Box>
+          <MovieList movies={movies} />
+        </Box>
+        
+        <Box>
+        <WatchedSummary watched={watched} />
+          <WatchedMovieList watched={watched} />
+        </Box>
       </Main>
     </>
   );
@@ -101,10 +125,10 @@ function Logo() {
   );
 }
 
-function NumResults({movies}) {
+function NumResults() {
   return (
     <p className="num-results">
-      Found <strong>{movies.length}</strong> results
+      Found <strong>X</strong> results
     </p>
   );
 }
@@ -118,18 +142,18 @@ function Main({children}) {
   );
 }
 
-function ListBox({movies}) {
-  const [isOpen1, setIsOpen1] = useState(true);
+function Box({children}) {
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="box">
       <button
         className="btn-toggle"
-        onClick={() => setIsOpen1((open) => !open)}
+        onClick={() => setIsOpen((open) => !open)}
       >
-        {isOpen1 ? "–" : "+"}
+        {isOpen ? "–" : "+"}
       </button>
-      {isOpen1 && <MovieList movies={movies} />}
+      {isOpen && children}
     </div>
   );
 }
@@ -160,27 +184,6 @@ function Movie({ movie }) {
   );
 }
 
-function WatchedBox() {
-  const [isOpen2, setIsOpen2] = useState(true);
-  const [watched, setWatched] = useState(tempWatchedData);
-
-  return (
-    <div className="box">
-      <button
-        className="btn-toggle"
-        onClick={() => setIsOpen2((open) => !open)}
-      >
-        {isOpen2 ? "–" : "+"}
-      </button>
-      {isOpen2 && (
-        <>
-          <WatchedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
-        </>
-      )}
-    </div>
-  );
-}
 
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
@@ -265,6 +268,7 @@ Main.propTypes = {
   children: PropTypes.node
 }
 
-ListBox.propTypes = {
-  movies: PropTypes.array
+Box.propTypes = {
+  movies: PropTypes.array,
+  children: PropTypes.node
 }
