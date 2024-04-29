@@ -48,109 +48,110 @@ const tempWatchedData = [
   },
 ];
 
-const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 const KEY = "48eb5390";
 
+function Loader() {
+  return <p className="loader">Loading...</p>;
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p className="error">
+      <span>⛔️</span> {message}
+    </p>
+  );
+}
+
+function Header({ children }) {
+  return <header className="header">{element}</header>;
+}
+
+function SearchBar() {
+  const [query, setQuery] = useState("");
+
+  return (
+      <div className="search-bar">
+        <div>
+          <h1>Movie Database</h1>
+        </div>
+      <input
+        className="search"
+        type="text"
+        placeholder="Search movies..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      </div>
+  );
+}
+
+
 export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
-  const query = 'Guardians of the Galaxy';
+  // const [query, setQuery] = useState("");
+  const [movies, setMovies] = useState(tempMovieData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchMovies() {
-      const res = await fetch(
-      `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-    )
-    const data = await res.json();
-    setMovies(data.Search);
-  }
+  // useEffect(() => {
+  //   async function fetchMovies() {
+  //     try {
+  //       setIsLoading(true);
+  //       const res = await fetch(
+  //         `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+  //       );
 
-  fetchMovies();
+  //       if (!res.ok) {
+  //         throw new Error("Failed to fetch movies");
+  //       }
 
-  }, []);
-  
+  //       const data = await res.json();
+
+  //       if (data.Response === "False") {
+  //         throw new Error("Movie not found");
+  //       }
+
+  //       setMovies(data.Search);
+  //       console.log(data.Search);
+  //       setIsLoading(false);
+  //     } catch (err) {
+  //       console.error(err);
+  //       setError(err.message);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+
+  //   fetchMovies();
+  // }, []);
+
   return (
     <>
-      <Navbar>
-        <Logo />
-        <Search />
-        <NumResults movies={movies} />
-      </Navbar>
-
+    <Header element={<SearchBar />} />
+      {/* <Header>
+        <SearchBar />
+      </Header> */}
       <Main>
-        <Box>
-          <MovieList movies={movies} />
-        </Box>
-        
-        <Box>
-        <WatchedSummary watched={watched} />
-          <WatchedMovieList watched={watched} />
-        </Box>
+          {isLoading && <Loader />}
+          {isLoading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
       </Main>
     </>
   );
 }
 
-function Navbar({children}) {
-  return (
-    <nav className="nav-bar">
-      {children}
-     
-    </nav>
-  );
+
+
+function Main({ children }) {
+  return <main className="main">{children}</main>;
 }
 
-function Search() {
-  const [query, setQuery] = useState("");
-
-  return (
-    <input
-      className="search"
-      type="text"
-      placeholder="Search movies..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-    />
-  );
-}
-
-function Logo() {
-  return (
-    <div className="logo">
-      <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
-    </div>
-  );
-}
-
-function NumResults() {
-  return (
-    <p className="num-results">
-      Found <strong>X</strong> results
-    </p>
-  );
-}
-
-function Main({children}) {
-
-  return (
-    <main className="main">
-      {children}
-    </main>
-  );
-}
-
-function Box({children}) {
+function Box({ children }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className="box">
-      <button
-        className="btn-toggle"
-        onClick={() => setIsOpen((open) => !open)}
-      >
+      <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
         {isOpen ? "–" : "+"}
       </button>
       {isOpen && children}
@@ -158,8 +159,7 @@ function Box({children}) {
   );
 }
 
-function MovieList({movies}) {
-
+function MovieList({ movies }) {
   return (
     <ul className="list">
       {movies?.map((movie) => (
@@ -183,7 +183,6 @@ function Movie({ movie }) {
     </li>
   );
 }
-
 
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
@@ -241,9 +240,13 @@ function WatchedMovieList({ watched }) {
   );
 }
 
+ErrorMessage.propTypes = {
+  message: PropTypes.string.isRequired,
+};
+
 Navbar.propTypes = {
-  children: PropTypes.node
-}
+  children: PropTypes.node,
+};
 
 MovieList.propTypes = {
   movies: PropTypes.array,
@@ -263,12 +266,12 @@ WatchedMovieList.propTypes = {
 
 NumResults.propTypes = {
   movies: PropTypes.array,
-}
+};
 Main.propTypes = {
-  children: PropTypes.node
-}
+  children: PropTypes.node,
+};
 
 Box.propTypes = {
   movies: PropTypes.array,
-  children: PropTypes.node
-}
+  children: PropTypes.node,
+};
