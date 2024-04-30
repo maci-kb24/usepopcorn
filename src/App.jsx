@@ -48,7 +48,6 @@ const tempWatchedData = [
   },
 ];
 
-
 const KEY = "48eb5390";
 
 function Loader() {
@@ -64,7 +63,7 @@ function ErrorMessage({ message }) {
 }
 
 function Header({ children }) {
-  return <header className="header">{element}</header>;
+  return <header className="header">{children}</header>;
 }
 
 function SearchBar() {
@@ -127,10 +126,9 @@ export default function App() {
 
   return (
     <>
-    <Header element={<SearchBar />} />
-      {/* <Header>
+      <Header>
         <SearchBar />
-      </Header> */}
+      </Header>
       <Main>
           {isLoading && <Loader />}
           {isLoading && !error && <MovieList movies={movies} />}
@@ -144,19 +142,6 @@ export default function App() {
 
 function Main({ children }) {
   return <main className="main">{children}</main>;
-}
-
-function Box({ children }) {
-  const [isOpen, setIsOpen] = useState(true);
-
-  return (
-    <div className="box">
-      <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
-        {isOpen ? "–" : "+"}
-      </button>
-      {isOpen && children}
-    </div>
-  );
 }
 
 function MovieList({ movies }) {
@@ -184,62 +169,6 @@ function Movie({ movie }) {
   );
 }
 
-function WatchedSummary({ watched }) {
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
-
-  return (
-    <div className="summary">
-      <h2>Movies you watched</h2>
-      <div>
-        <p>
-          <span>#️⃣</span>
-          <span>{watched.length} movies</span>
-        </p>
-        <p>
-          <span>⭐️</span>
-          <span>{avgImdbRating}</span>
-        </p>
-        <p>
-          <span>🌟</span>
-          <span>{avgUserRating}</span>
-        </p>
-        <p>
-          <span>⏳</span>
-          <span>{avgRuntime} min</span>
-        </p>
-      </div>
-    </div>
-  );
-}
-function WatchedMovieList({ watched }) {
-  return (
-    <ul className="list">
-      {watched.map((movie) => (
-        <li key={movie.imdbID}>
-          <img src={movie.Poster} alt={`${movie.Title} poster`} />
-          <h3>{movie.Title}</h3>
-          <div>
-            <p>
-              <span>⭐️</span>
-              <span>{movie.imdbRating}</span>
-            </p>
-            <p>
-              <span>🌟</span>
-              <span>{movie.userRating}</span>
-            </p>
-            <p>
-              <span>⏳</span>
-              <span>{movie.runtime} min</span>
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 ErrorMessage.propTypes = {
   message: PropTypes.string.isRequired,
 };
@@ -256,22 +185,6 @@ Movie.propTypes = {
   movie: PropTypes.object.isRequired,
 };
 
-WatchedSummary.propTypes = {
-  watched: PropTypes.array.isRequired,
-};
-
-WatchedMovieList.propTypes = {
-  watched: PropTypes.array.isRequired,
-};
-
-NumResults.propTypes = {
-  movies: PropTypes.array,
-};
 Main.propTypes = {
-  children: PropTypes.node,
-};
-
-Box.propTypes = {
-  movies: PropTypes.array,
   children: PropTypes.node,
 };
