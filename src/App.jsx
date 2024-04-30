@@ -23,32 +23,46 @@ const tempMovieData = [
     Poster:
       "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
   },
-];
-
-const tempWatchedData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-    runtime: 148,
-    imdbRating: 8.8,
-    userRating: 10,
-  },
   {
     imdbID: "tt0088763",
     Title: "Back to the Future",
     Year: "1985",
     Poster:
       "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-    runtime: 116,
-    imdbRating: 8.5,
-    userRating: 9,
+  },
+  {
+    imdbID: "tt0111161",
+    Title: "The Shawshank Redemption",
+    Year: "1994",
+    Poster:
+      "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
   },
 ];
 
-const KEY = "48eb5390";
+// const tempWatchedData = [
+//   {
+//     imdbID: "tt1375666",
+//     Title: "Inception",
+//     Year: "2010",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+//     runtime: 148,
+//     imdbRating: 8.8,
+//     userRating: 10,
+//   },
+//   {
+//     imdbID: "tt0088763",
+//     Title: "Back to the Future",
+//     Year: "1985",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+//     runtime: 116,
+//     imdbRating: 8.5,
+//     userRating: 9,
+//   },
+// ];
+
+// const KEY = "48eb5390";
 
 function Loader() {
   return <p className="loader">Loading...</p>;
@@ -66,14 +80,18 @@ function Header({ children }) {
   return <header className="header">{children}</header>;
 }
 
+function Logo() {
+  return (
+  <div className="logo">
+    <h1 className="logo-title">Movie Database</h1>
+  </div>
+)}
+
 function SearchBar() {
   const [query, setQuery] = useState("");
 
   return (
-      <div className="search-bar">
-        <div>
-          <h1>Movie Database</h1>
-        </div>
+    <div className="search-bar">
       <input
         className="search"
         type="text"
@@ -81,10 +99,9 @@ function SearchBar() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      </div>
+    </div>
   );
 }
-
 
 export default function App() {
   // const [query, setQuery] = useState("");
@@ -127,18 +144,17 @@ export default function App() {
   return (
     <>
       <Header>
+        <Logo />
         <SearchBar />
       </Header>
       <Main>
-          {isLoading && <Loader />}
-          {isLoading && !error && <MovieList movies={movies} />}
-          {error && <ErrorMessage message={error} />}
+        {isLoading && <Loader />}
+        {!isLoading && !error && <MovieList movies={movies} />}
+        {error && <ErrorMessage message={error} />}
       </Main>
     </>
   );
 }
-
-
 
 function Main({ children }) {
   return <main className="main">{children}</main>;
@@ -146,26 +162,28 @@ function Main({ children }) {
 
 function MovieList({ movies }) {
   return (
-    <ul className="list">
+    <div className="movie-list">
       {movies?.map((movie) => (
         <Movie key={movie.imdbID} movie={movie} />
       ))}
-    </ul>
+    </div>
   );
 }
 
 function Movie({ movie }) {
   return (
-    <li key={movie.imdbID}>
+    <div key={movie.imdbID} className="movie-card">
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
-      <div>
-        <p>
-          <span>🗓</span>
-          <span>{movie.Year}</span>
-        </p>
+      <div className="movie-info">
+        <h3>{movie.Title}</h3>
+        <div>
+          <p>
+            <span>🗓</span>
+            <span>{movie.Year}</span>
+          </p>
+        </div>
       </div>
-    </li>
+    </div>
   );
 }
 
@@ -173,7 +191,11 @@ ErrorMessage.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-Navbar.propTypes = {
+Loader.propTypes = {
+  children: PropTypes.node,
+};
+
+Header.propTypes = {
   children: PropTypes.node,
 };
 
