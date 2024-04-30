@@ -1,43 +1,49 @@
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import NavBar from "./components/NavBar";
+import MovieList from "./components/MovieList";
+import SearchBar from "./components/SearchBar";
+import ErrorMessage from "./components/ErrorMessage";
+import Loader from "./components/Loader";
+import Main from "./components/Main";
+import Logo from "./components/Logo";
 
-const tempMovieData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0133093",
-    Title: "The Matrix",
-    Year: "1999",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt6751668",
-    Title: "Parasite",
-    Year: "2019",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0088763",
-    Title: "Back to the Future",
-    Year: "1985",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0111161",
-    Title: "The Shawshank Redemption",
-    Year: "1994",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-  },
-];
+// const tempMovieData = [
+//   {
+//     imdbID: "tt1375666",
+//     Title: "Inception",
+//     Year: "2010",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+//   },
+//   {
+//     imdbID: "tt0133093",
+//     Title: "The Matrix",
+//     Year: "1999",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
+//   },
+//   {
+//     imdbID: "tt6751668",
+//     Title: "Parasite",
+//     Year: "2019",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
+//   },
+//   {
+//     imdbID: "tt0088763",
+//     Title: "Back to the Future",
+//     Year: "1985",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+//   },
+//   {
+//     imdbID: "tt0111161",
+//     Title: "The Shawshank Redemption",
+//     Year: "1994",
+//     Poster:
+//       "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
+//   },
+// ];
 
 // const tempWatchedData = [
 //   {
@@ -62,91 +68,54 @@ const tempMovieData = [
 //   },
 // ];
 
-// const KEY = "48eb5390";
-
-function Loader() {
-  return <p className="loader">Loading...</p>;
-}
-
-function ErrorMessage({ message }) {
-  return (
-    <p className="error">
-      <span>⛔️</span> {message}
-    </p>
-  );
-}
-
-function Header({ children }) {
-  return <header className="header">{children}</header>;
-}
-
-function Logo() {
-  return (
-  <div className="logo">
-    <h1 className="logo-title">Movie Database</h1>
-  </div>
-)}
-
-function SearchBar() {
-  const [query, setQuery] = useState("");
-
-  return (
-    <div className="search-bar">
-      <input
-        className="search"
-        type="text"
-        placeholder="Search movies..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-    </div>
-  );
-}
+const KEY = "48eb5390";
 
 export default function App() {
   // const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState(tempMovieData);
+  const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   async function fetchMovies() {
-  //     try {
-  //       setIsLoading(true);
-  //       const res = await fetch(
-  //         `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-  //       );
+  const query = 'Gladiator'
 
-  //       if (!res.ok) {
-  //         throw new Error("Failed to fetch movies");
-  //       }
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
 
-  //       const data = await res.json();
+        if (!res.ok) {
+          throw new Error("Failed to fetch movies");
+        }
 
-  //       if (data.Response === "False") {
-  //         throw new Error("Movie not found");
-  //       }
+        const data = await res.json();
 
-  //       setMovies(data.Search);
-  //       console.log(data.Search);
-  //       setIsLoading(false);
-  //     } catch (err) {
-  //       console.error(err);
-  //       setError(err.message);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
+        if (data.Response === "False") {
+          throw new Error("Movie not found");
+        }
 
-  //   fetchMovies();
-  // }, []);
+        setMovies(data.Search);
+        console.log(data.Search);
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchMovies();
+  }, [query]);
 
   return (
     <>
-      <Header>
+      <NavBar>
         <Logo />
         <SearchBar />
-      </Header>
+      </NavBar>
       <Main>
         {isLoading && <Loader />}
         {!isLoading && !error && <MovieList movies={movies} />}
@@ -156,57 +125,4 @@ export default function App() {
   );
 }
 
-function Main({ children }) {
-  return <main className="main">{children}</main>;
-}
 
-function MovieList({ movies }) {
-  return (
-    <div className="movie-list">
-      {movies?.map((movie) => (
-        <Movie key={movie.imdbID} movie={movie} />
-      ))}
-    </div>
-  );
-}
-
-function Movie({ movie }) {
-  return (
-    <div key={movie.imdbID} className="movie-card">
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <div className="movie-info">
-        <h3>{movie.Title}</h3>
-        <div>
-          <p>
-            <span>🗓</span>
-            <span>{movie.Year}</span>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-ErrorMessage.propTypes = {
-  message: PropTypes.string.isRequired,
-};
-
-Loader.propTypes = {
-  children: PropTypes.node,
-};
-
-Header.propTypes = {
-  children: PropTypes.node,
-};
-
-MovieList.propTypes = {
-  movies: PropTypes.array,
-};
-
-Movie.propTypes = {
-  movie: PropTypes.object.isRequired,
-};
-
-Main.propTypes = {
-  children: PropTypes.node,
-};
