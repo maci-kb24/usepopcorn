@@ -43,6 +43,8 @@
   
   .main {
     margin-top: 4.4rem;
+    max-width: 1200px;
+    margin: 4.4rem auto 0 auto;
   }
   
   .loader {
@@ -121,18 +123,13 @@
   
   /* ******* */
 
-  .movie-list {
+  .movie-list, .watched-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 0.5fr));
-    margin-top: 3.2rem;
-    margin: 0 auto;
-    max-width: 1200px;
-    gap:2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2.4rem;
   }
 
   .movie-card {
-    display: flex;
-    flex-direction: column;
     border-radius: 0.9rem;
     position:relative;
   }
@@ -147,9 +144,16 @@
 
   .movie-info {
     padding: 12px 0px 12px 12px;
-    position: absolute;
     left: 0;
     bottom: 0;
+  }
+
+  .watched-card img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 0.9rem 0.9rem 0 0;
   }
   
   /*
