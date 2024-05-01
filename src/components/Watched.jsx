@@ -8,8 +8,9 @@ function Watched({ movie }) {
           <h3>{movie.Title}</h3>
           <div>
             <p>
-              <span>🗓</span>
-              <span>{movie.Year}</span>
+              <span style={{paddingRight: "2.5rem"}}>🌟{movie.imdbRating}</span>
+              <span style={{paddingRight: "2.5rem"}}>🌟{movie.userRating}</span>
+              <span style={{paddingRight: "2.5rem"}}>🕟{movie.runtime} min</span>
             </p>
           </div>
         </div>

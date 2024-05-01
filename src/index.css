@@ -148,6 +148,10 @@
     bottom: 0;
   }
 
+  .movie-info h3 {
+    font-size: 1.4rem;
+  }
+
   .watched-card img {
     max-width: 100%;
     height: auto;
@@ -156,6 +160,21 @@
     border-radius: 0.9rem 0.9rem 0 0;
   }
   
+  .watched-card {
+    border-radius: 0.9rem;
+    position:relative;
+  }
+
+  .watched-info {
+    padding: 12px 0px 12px 12px;
+    left: 0;
+    bottom: 0;
+  }
+
+  .watched-info h3 {
+    font-size: 1.4rem;
+  }
+
   /*
   SPACING SYSTEM (px)
   2 / 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 / 80 / 96 / 128

@@ -71,6 +71,9 @@ const tempWatchedData = [
     imdbID: "tt0111161",
     Title: "The Shawshank Redemption",
     Year: "1994",
+    runtime: 142,
+    imdbRating: 9.3,
+    userRating: 10,
     Poster:
       "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
   },
@@ -78,6 +81,9 @@ const tempWatchedData = [
     imdbID: "tt0133093",
     Title: "The Matrix",
     Year: "1999",
+    runtime: 136,
+    imdbRating: 8.7,
+    userRating: 8,
     Poster:
       "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
   },
@@ -85,6 +91,9 @@ const tempWatchedData = [
     imdbID: "tt0068646",
     Title: "The Godfather",
     Year: "1972",
+    runtime: 175,
+    imdbRating: 9.2,
+    userRating: 9,
     Poster:
       "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
   },
@@ -92,6 +101,9 @@ const tempWatchedData = [
     imdbID: "tt0109830",
     Title: "Forrest Gump",
     Year: "1994",
+    runtime: 142,
+    imdbRating: 8.8,
+    userRating: 10,
     Poster:
       "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
   },
